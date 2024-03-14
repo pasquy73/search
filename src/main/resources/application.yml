@@ -1,0 +1,23 @@
+elasticsearch:
+  cluster:
+    name: elasticsearch
+  address:
+    host: localhost
+    port: 9200
+    username: 
+    password: 
+    ssl:
+      enabled: false
+      verification: false
+spring:
+  security:
+    user:
+      name: admin
+      password: admin
+      
+dome:
+  getproductofferingbyid: https://dome-marketplace.org/catalog/productOffering
+  getproductspecificationbyid: https://dome-marketplace.org/catalog/productSpecification
+  getservicespecificationbyid: https://dome-marketplace.org/service/serviceSpecification
+  getresourcespecificationbyid: https://dome-marketplace.org/resource/resourceSpecification
+  getallproductofferings: https://dome-marketplace.org/catalog/productOffering
