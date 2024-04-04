@@ -61,6 +61,7 @@ public class IndexingObject {
 	private ServiceSpecification[] services;
 	
 	//from Resource Specification
+	@Field(type = FieldType.Nested)
 	private ResourceSpecification[] resources;
 	
 	//from Categorization and Entities Extraction

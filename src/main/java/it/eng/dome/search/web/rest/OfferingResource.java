@@ -22,13 +22,14 @@ public class OfferingResource {
 	@Autowired
 	private OfferingProcessor offeringProcessor;
 
-	@PostMapping("/indexing")
-	public ResponseEntity<IndexingObject> save(IndexingObject obj){
-
-		obj = offeringProcessor.save(obj);
-		return ResponseEntity.ok(obj);
-
-	}
+	/*
+	 * @PostMapping("/indexing") public ResponseEntity<IndexingObject>
+	 * save(IndexingObject obj){
+	 * 
+	 * obj = offeringProcessor.save(obj); return ResponseEntity.ok(obj);
+	 * 
+	 * }
+	 */
 
 
 	@PostMapping("/offerings/processProductOffering")
@@ -69,14 +70,14 @@ public class OfferingResource {
 	 * }
 	 */
 	
-	
-	@GetMapping("/offerings/analyzeToken")
-	public ResponseEntity<String> analyzeToken(){
-		
-		String obj = offeringProcessor.analyzeToken();
-		return ResponseEntity.ok(obj);
-		
-	}
+	/*
+	 * @GetMapping("/offerings/analyzeToken") public ResponseEntity<String>
+	 * analyzeToken(){
+	 * 
+	 * String obj = offeringProcessor.analyzeToken(); return ResponseEntity.ok(obj);
+	 * 
+	 * }
+	 */
 	
 	
 	@GetMapping("/offerings/clearRepository")
