@@ -55,7 +55,7 @@ public class OfferingProcessor {
 
 		//validate product offering
 		//prepare metadata
-
+		log.info("for test");
 		objToIndex = indexingManager.processOffering(product, objToIndex);
 		objToIndex = save(objToIndex);
 
