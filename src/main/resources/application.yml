@@ -21,3 +21,4 @@ dome:
   getservicespecificationbyid: https://dome-marketplace.org/service/serviceSpecification
   getresourcespecificationbyid: https://dome-marketplace.org/resource/resourceSpecification
   getallproductofferings: https://dome-marketplace.org/catalog/productOffering
+  getallproductofferingsfromtmforum: https://dome-dev.eng.it/tmf-api/productCatalogManagement/v4/productOffering

@@ -1,19 +1,10 @@
 package it.eng.dome.search.service;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
+//import java.io.BufferedReader;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.HttpClients;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -113,6 +104,39 @@ public class OfferingProcessor {
 		
 		return toRet;
 	}
+	
+	
+	public List<IndexingObject> processListProductOfferingFromTMForumAPI() {
+		// TODO Auto-generated method stub
+		
+		List<IndexingObject> toRet = new ArrayList<IndexingObject>();
+		String listProductOfferings = restUtil.getAllProductOfferingsFromTMForum();
+		
+		try {
+			ProductOffering[] productOffList = objectMapper.readValue(listProductOfferings, ProductOffering[].class);
+			
+			for(ProductOffering product : productOffList) {
+				
+				IndexingObject objToIndex = new IndexingObject();
+				objToIndex = indexingManager.processOfferingFromTMForum(product,objToIndex);
+
+				objToIndex = save(objToIndex);
+				toRet.add(objToIndex);
+			}
+		
+		} catch (JsonMappingException e) {
+			log.warn("JsonMappingException - Error during processListProductOffering(). Skipped: {}", e.getMessage());
+			
+			e.printStackTrace();
+		} catch (JsonProcessingException e) {
+			log.warn("JsonProcessingException - Error during processListProductOffering(). Skipped: {}", e.getMessage());
+			
+			e.printStackTrace();
+		}
+		
+		return toRet;
+			}
+	
 
 	public IndexingObject processListProductOffering(ProductOffering[] product) {
 		// TODO Auto-generated method stub
@@ -120,57 +144,46 @@ public class OfferingProcessor {
 	}
 
 
-	public String analyzeToken() {
-		String elasticsearchUrl = "http://localhost:9200";
-		String indexName = "indexing-object";
-		String textToAnalyze = "OneDrive";
+	
+	//method to analyze indexed tokens
+	/*
+	 * public String analyzeToken() { String elasticsearchUrl =
+	 * "http://localhost:9200"; String indexName = "indexing-object"; String
+	 * textToAnalyze = "OneDrive";
+	 * 
+	 * 
+	 * HttpClient httpClient = HttpClients.createDefault();
+	 * 
+	 * // Costruisci l'URL per l'analisi del token String analyzeUrl =
+	 * elasticsearchUrl + "/" + indexName + "/_analyze";
+	 * 
+	 * // Costruisci la richiesta HTTP POST HttpPost httpPost = new
+	 * HttpPost(analyzeUrl); httpPost.setHeader("Content-Type", "application/json");
+	 * 
+	 * // Costruisci il corpo della richiesta con il testo da analizzare String
+	 * requestBody = "{ \"analyzer\": \"standard\", \"text\": \"" + textToAnalyze +
+	 * "\" }"; try { httpPost.setEntity(new StringEntity(requestBody)); } catch
+	 * (UnsupportedEncodingException e1) { // TODO Auto-generated catch block
+	 * e1.printStackTrace(); } try { // Esegui la richiesta HttpResponse response;
+	 * 
+	 * response = httpClient.execute(httpPost);
+	 * 
+	 * HttpEntity entity = response.getEntity();
+	 * 
+	 * StringBuilder result = new StringBuilder(); try (BufferedReader br = new
+	 * BufferedReader(new InputStreamReader(entity.getContent()))) { String line;
+	 * while ((line = br.readLine()) != null) { result.append(line); } }
+	 * 
+	 * return result.toString();
+	 * 
+	 * } catch (ClientProtocolException e) { // TODO Auto-generated catch block
+	 * e.printStackTrace(); } catch (IOException e) { // TODO Auto-generated catch
+	 * block e.printStackTrace(); }
+	 * 
+	 * return null; }
+	 */
 
 
-		HttpClient httpClient = HttpClients.createDefault();
-
-		// Costruisci l'URL per l'analisi del token
-		String analyzeUrl = elasticsearchUrl + "/" + indexName + "/_analyze";
-
-		// Costruisci la richiesta HTTP POST
-		HttpPost httpPost = new HttpPost(analyzeUrl);
-		httpPost.setHeader("Content-Type", "application/json");
-
-		// Costruisci il corpo della richiesta con il testo da analizzare
-		String requestBody = "{ \"analyzer\": \"standard\", \"text\": \"" + textToAnalyze + "\" }";
-		try {
-			httpPost.setEntity(new StringEntity(requestBody));
-		} catch (UnsupportedEncodingException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		try {
-			// Esegui la richiesta
-			HttpResponse response;
-
-			response = httpClient.execute(httpPost);
-
-			HttpEntity entity = response.getEntity();
-
-			StringBuilder result = new StringBuilder();
-			try (BufferedReader br = new BufferedReader(new InputStreamReader(entity.getContent()))) {
-				String line;
-				while ((line = br.readLine()) != null) {
-					result.append(line);
-				}
-			}
-
-			return result.toString();
-
-		} catch (ClientProtocolException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		return null;
-	}
 
 
 

@@ -25,6 +25,9 @@ public class RestUtil {
 	@Value("${dome.getallproductofferings}")
 	private String getAllProductOfferings;
 	
+	@Value("${dome.getallproductofferingsfromtmforum}")
+	private String getAllProductOfferingsFromTMForum;
+	
 	private static final Logger log = LoggerFactory.getLogger(RestUtil.class);
 	private static RestTemplate restTemplate = new RestTemplate();
 	
@@ -68,6 +71,14 @@ public class RestUtil {
 	public String getAllProductOfferings() {
 
 		ResponseEntity<String> response= restTemplate.getForEntity(getAllProductOfferings, String.class);
+		String result= response.getBody();	
+
+		return result;
+	}
+	
+	public String getAllProductOfferingsFromTMForum() {
+
+		ResponseEntity<String> response= restTemplate.getForEntity(getAllProductOfferingsFromTMForum, String.class);
 		String result= response.getBody();	
 
 		return result;

@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -56,6 +55,17 @@ public class OfferingResource {
 		return ResponseEntity.ok(obj);
 
 	}
+	
+	
+	@GetMapping("/offering/processProductOfferingsFromTMForumAPI")
+	public ResponseEntity<List<IndexingObject>> processProductOffetingsFromTMForumAPI(){
+		List<IndexingObject> obj = offeringProcessor.processListProductOfferingFromTMForumAPI();
+		return ResponseEntity.ok(obj);
+
+	}
+	
+	
+	
 
 
 	/*
@@ -86,6 +96,9 @@ public class OfferingResource {
 		offeringProcessor.clearRepository();
 		return (ResponseEntity) ResponseEntity.ok();
 	}
+	
+	
+	
 	
 	
 	

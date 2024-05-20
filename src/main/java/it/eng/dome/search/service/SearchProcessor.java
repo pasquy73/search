@@ -39,7 +39,7 @@ public class SearchProcessor {
 	  public Page<IndexingObject> search(String q, Pageable pageable){
 	  
 	  // QueryBuilder queryBuilder = QueryBuilders.simpleQueryStringQuery(q);
-	  QueryBuilder queryBuilder = QueryBuilders.queryStringQuery(q);
+	  QueryBuilder queryBuilder = QueryBuilders.queryStringQuery(q); //.defaultOperator(null);
 	  
 	  NativeSearchQueryBuilder nativeSearchQueryBuilder = new
 	  NativeSearchQueryBuilder() .withQuery(queryBuilder ) .withPageable(pageable);

@@ -1,6 +1,5 @@
 package it.eng.dome.search.indexing;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,7 +33,7 @@ public class MappingManager {
 	public IndexingObject prepareOfferingMetadata(ProductOffering product, IndexingObject objToIndex) {
 
 		//prepare metadata of offerings
-
+		objToIndex.setProductOffering(product);
 		objToIndex.setProductOfferingDescription(product.getDescription());
 		objToIndex.setProductOfferingId(product.getId());
 		objToIndex.setProductOfferingIsBundle(product.getIsBundle());
@@ -44,14 +43,12 @@ public class MappingManager {
 
 		return objToIndex;
 
-
-		// TODO Auto-generated method stub
-
 	}
 
+	
 	public IndexingObject prepareProdSpecMetadata(ProductSpecification productSpecDetails, IndexingObject objToIndex) {
 		//prepare metadata of Products specification
-
+		objToIndex.setProductSpecification(productSpecDetails);
 		objToIndex.setProductSpecificationBrand(productSpecDetails.getBrand());
 		objToIndex.setProductSpecificationId(productSpecDetails.getId());
 		objToIndex.setProductSpecificationName(productSpecDetails.getName());
@@ -80,19 +77,19 @@ public class MappingManager {
 
 				String requestForServiceSpecificationId = restTemplate.getServiceSpecificationById(s.getId());
 				ServiceSpecification serviceSpecDetails = objectMapper.readValue(requestForServiceSpecificationId, ServiceSpecification.class);
-				
+
 				listServiceDetails.add(serviceSpecDetails);
 			}	
-			
-			} catch (JsonProcessingException e) {
-				log.warn("JsonProcessingException - Error during prepareServiceSpecMetadata(). Skipped: {}", e.getMessage());
-				e.printStackTrace();
-			}
-		
+
+		} catch (JsonProcessingException e) {
+			log.warn("JsonProcessingException - Error during prepareServiceSpecMetadata(). Skipped: {}", e.getMessage());
+			e.printStackTrace();
+		}
+
 		//ServiceSpecification[] listServiceToIndex = new ServiceSpecification[listServiceDetails.size()];
-		
+
 		ServiceSpecification[] listServiceToIndex = listServiceDetails.toArray(new ServiceSpecification[listServiceDetails.size()]);
-		
+
 		objToIndex.setServices(listServiceToIndex);	
 
 		return objToIndex;
@@ -100,24 +97,24 @@ public class MappingManager {
 
 
 	public IndexingObject prepareResourceSpecMetadata(ResourceSpecification[] resourceList, IndexingObject objToIndex) {
-		
+
 		List<ResourceSpecification> listResourceDetails = new ArrayList<ResourceSpecification>();
-		
+
 		try {
 
 			for(ResourceSpecification r : resourceList) {
 
 				String requestForResourceSpecificationId = restTemplate.getResourceSpecificationById(r.getId());
 				ResourceSpecification resourceSpecDetails = objectMapper.readValue(requestForResourceSpecificationId, ResourceSpecification.class);
-				
+
 				listResourceDetails.add(resourceSpecDetails);
 			}	
-			
-			} catch (JsonProcessingException e) {
-				log.warn("JsonProcessingException - Error during prepareResourceSpecMetadata(). Skipped: {}", e.getMessage());
-				e.printStackTrace();
-			}
-		
+
+		} catch (JsonProcessingException e) {
+			log.warn("JsonProcessingException - Error during prepareResourceSpecMetadata(). Skipped: {}", e.getMessage());
+			e.printStackTrace();
+		}
+
 		//ResourceSpecification[] listResourceToIndex = new ResourceSpecification[listResourceDetails.size()];
 		ResourceSpecification[] listResourceToIndex = listResourceDetails.toArray(new ResourceSpecification[listResourceDetails.size()]);
 
