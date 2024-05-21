@@ -20,7 +20,7 @@ import it.eng.dome.search.rest.web.util.RestUtil;
 public class IndexingManager {
 
 	@Autowired
-	private RestUtil restTemplate;
+	private RestUtil restUtil;
 
 	@Autowired
 	private MappingManager mappingManager;
@@ -33,17 +33,13 @@ public class IndexingManager {
 
 		try {
 
-			//			if(product.getName() == null) {
-			//				log.info("null value in name");
-			//
-			//			}else{
 			objToIndex = mappingManager.prepareOfferingMetadata(product, objToIndex);
 
 			ProductSpecification productSpec = product.getProductSpecification();			
 			if(productSpec.getId() == null) {
 				log.info("null value in ProductSpecification ID");
 			}else {
-				String requestForProductSpecById = restTemplate.getProductSpecificationById(productSpec.getId());
+				String requestForProductSpecById = restUtil.getProductSpecificationById(productSpec.getId());
 
 				ProductSpecification productSpecDetails = objectMapper.readValue(requestForProductSpecById, ProductSpecification.class);
 
@@ -96,7 +92,7 @@ public class IndexingManager {
 			if(productSpec.getId() == null) {
 				log.info("null value in ProductSpecification ID");
 			}else {
-				String requestForProductSpecById = restTemplate.getProductSpecificationById(productSpec.getId());
+				String requestForProductSpecById = restUtil.getTMFProductSpecificationById(productSpec.getId());
 
 				ProductSpecification productSpecDetails = objectMapper.readValue(requestForProductSpecById, ProductSpecification.class);
 
@@ -107,13 +103,13 @@ public class IndexingManager {
 				if(serviceList != null) {
 
 					log.info("---Mapping Services associated---");
-					objToIndex = mappingManager.prepareServiceSpecMetadata(serviceList,objToIndex);
+					objToIndex = mappingManager.prepareTMFServiceSpecMetadata(serviceList,objToIndex);
 				}
 
 				ResourceSpecification[] resourceList = productSpecDetails.getResourceSpecification();
 				if(resourceList != null) {
 					log.info("---Mapping Resources associated---");
-					objToIndex = mappingManager.prepareResourceSpecMetadata(resourceList,objToIndex);
+					objToIndex = mappingManager.prepareTMFResourceSpecMetadata(resourceList,objToIndex);
 				}
 			}
 			//}

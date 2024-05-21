@@ -122,6 +122,63 @@ public class MappingManager {
 
 		return objToIndex;
 	}
+	
+	
+	public IndexingObject prepareTMFServiceSpecMetadata(ServiceSpecification[] serviceList, IndexingObject objToIndex) {
+
+		ArrayList<ServiceSpecification> listServiceDetails = new ArrayList<ServiceSpecification>();
+
+		try {
+
+			for(ServiceSpecification s : serviceList) {
+
+				String requestForServiceSpecificationId = restTemplate.getTMFServiceSpecificationById(s.getId());
+				ServiceSpecification serviceSpecDetails = objectMapper.readValue(requestForServiceSpecificationId, ServiceSpecification.class);
+
+				listServiceDetails.add(serviceSpecDetails);
+			}	
+
+		} catch (JsonProcessingException e) {
+			log.warn("JsonProcessingException - Error during prepareServiceSpecMetadata(). Skipped: {}", e.getMessage());
+			e.printStackTrace();
+		}
+
+		//ServiceSpecification[] listServiceToIndex = new ServiceSpecification[listServiceDetails.size()];
+
+		ServiceSpecification[] listServiceToIndex = listServiceDetails.toArray(new ServiceSpecification[listServiceDetails.size()]);
+
+		objToIndex.setServices(listServiceToIndex);	
+
+		return objToIndex;
+	}
+	
+	
+	public IndexingObject prepareTMFResourceSpecMetadata(ResourceSpecification[] resourceList, IndexingObject objToIndex) {
+
+		List<ResourceSpecification> listResourceDetails = new ArrayList<ResourceSpecification>();
+
+		try {
+
+			for(ResourceSpecification r : resourceList) {
+
+				String requestForResourceSpecificationId = restTemplate.getTMFResourceSpecificationById(r.getId());
+				ResourceSpecification resourceSpecDetails = objectMapper.readValue(requestForResourceSpecificationId, ResourceSpecification.class);
+
+				listResourceDetails.add(resourceSpecDetails);
+			}	
+
+		} catch (JsonProcessingException e) {
+			log.warn("JsonProcessingException - Error during prepareResourceSpecMetadata(). Skipped: {}", e.getMessage());
+			e.printStackTrace();
+		}
+
+		//ResourceSpecification[] listResourceToIndex = new ResourceSpecification[listResourceDetails.size()];
+		ResourceSpecification[] listResourceToIndex = listResourceDetails.toArray(new ResourceSpecification[listResourceDetails.size()]);
+
+		objToIndex.setResources(listResourceToIndex);	
+
+		return objToIndex;
+	}
 
 
 

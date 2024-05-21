@@ -29,7 +29,7 @@ public class OfferingProcessor {
 
 	@Autowired
 	private IndexingManager indexingManager;
-	
+
 	private static final ObjectMapper objectMapper = new ObjectMapper();
 
 
@@ -42,11 +42,9 @@ public class OfferingProcessor {
 		return offeringRepo.save(obj);
 
 	}
-	
-	
-	public void clearRepository() {		
-		offeringRepo.deleteAll();		
-	}
+
+
+	/** MANAGE BAE ENDPOINT */
 
 
 	public IndexingObject processProductOffering(ProductOffering product) {
@@ -55,96 +53,78 @@ public class OfferingProcessor {
 
 		//validate product offering
 		//prepare metadata
-		log.info("for test");
 		objToIndex = indexingManager.processOffering(product, objToIndex);
 		objToIndex = save(objToIndex);
 
 		return objToIndex;
 
-
 	}
 
 
-	public IndexingObject processProductOfferingById(String productOfferingId) {
-		log.info("Prepare for mapping: " + productOfferingId);
+	/** */ //---->to complete
+	/*
+	 * public IndexingObject processProductOfferingById(String productOfferingId) {
+	 * log.info("Prepare for mapping: " + productOfferingId);
+	 * 
+	 * String productOfferingRequest =
+	 * restUtil.getProductOfferingById(productOfferingId);
+	 * 
+	 * return null;
+	 * 
+	 * }
+	 */
 
-		String productOfferingRequest = restUtil.getProductOfferingById(productOfferingId);
 
-		return null;
-
-	}
-
-	
 	public List<IndexingObject> processListProductOffering() {
 
 		List<IndexingObject> toRet = new ArrayList<IndexingObject>();
 		String listProductOfferings = restUtil.getAllProductOfferings();
-		
+
 		try {
 			ProductOffering[] productOffList = objectMapper.readValue(listProductOfferings, ProductOffering[].class);
-			
+
 			for(ProductOffering product : productOffList) {
-				
+
 				IndexingObject objToIndex = new IndexingObject();
 				objToIndex = indexingManager.processOffering(product,objToIndex);
 
 				objToIndex = save(objToIndex);
 				toRet.add(objToIndex);
 			}
-		
+
 		} catch (JsonMappingException e) {
 			log.warn("JsonMappingException - Error during processListProductOffering(). Skipped: {}", e.getMessage());
-			
+
 			e.printStackTrace();
 		} catch (JsonProcessingException e) {
 			log.warn("JsonProcessingException - Error during processListProductOffering(). Skipped: {}", e.getMessage());
-			
+
 			e.printStackTrace();
 		}
-		
+
 		return toRet;
 	}
-	
-	
-	public List<IndexingObject> processListProductOfferingFromTMForumAPI() {
-		// TODO Auto-generated method stub
-		
+
+
+
+	public List<IndexingObject> processListProductOffering(ProductOffering[] products) throws JsonMappingException, JsonProcessingException {
+
 		List<IndexingObject> toRet = new ArrayList<IndexingObject>();
-		String listProductOfferings = restUtil.getAllProductOfferingsFromTMForum();
-		
-		try {
-			ProductOffering[] productOffList = objectMapper.readValue(listProductOfferings, ProductOffering[].class);
-			
-			for(ProductOffering product : productOffList) {
-				
-				IndexingObject objToIndex = new IndexingObject();
-				objToIndex = indexingManager.processOfferingFromTMForum(product,objToIndex);
 
-				objToIndex = save(objToIndex);
-				toRet.add(objToIndex);
-			}
-		
-		} catch (JsonMappingException e) {
-			log.warn("JsonMappingException - Error during processListProductOffering(). Skipped: {}", e.getMessage());
-			
-			e.printStackTrace();
-		} catch (JsonProcessingException e) {
-			log.warn("JsonProcessingException - Error during processListProductOffering(). Skipped: {}", e.getMessage());
-			
-			e.printStackTrace();
+		for(ProductOffering product : products) {
+
+			IndexingObject objToIndex = new IndexingObject();
+			objToIndex = indexingManager.processOffering(product,objToIndex);
+
+			objToIndex = save(objToIndex);
+			toRet.add(objToIndex);
 		}
-		
-		return toRet;
-			}
-	
 
-	public IndexingObject processListProductOffering(ProductOffering[] product) {
-		// TODO Auto-generated method stub
-		return null;
+		return toRet;
 	}
 
 
-	
+
 	//method to analyze indexed tokens
 	/*
 	 * public String analyzeToken() { String elasticsearchUrl =
@@ -184,10 +164,45 @@ public class OfferingProcessor {
 	 */
 
 
+	/** MANAGE TMFORUM API*/
+
+	public List<IndexingObject> processListProductOfferingFromTMForumAPI() {
+		// TODO Auto-generated method stub
+
+		List<IndexingObject> toRet = new ArrayList<IndexingObject>();
+		String listProductOfferings = restUtil.getAllProductOfferingsFromTMForum();
+
+		try {
+			ProductOffering[] productOffList = objectMapper.readValue(listProductOfferings, ProductOffering[].class);
+
+			for(ProductOffering product : productOffList) {
+
+				IndexingObject objToIndex = new IndexingObject();
+				objToIndex = indexingManager.processOfferingFromTMForum(product,objToIndex);
+
+				objToIndex = save(objToIndex);
+				toRet.add(objToIndex);
+			}
+
+		} catch (JsonMappingException e) {
+			log.warn("JsonMappingException - Error during processListProductOffering(). Skipped: {}", e.getMessage());
+
+			e.printStackTrace();
+		} catch (JsonProcessingException e) {
+			log.warn("JsonProcessingException - Error during processListProductOffering(). Skipped: {}", e.getMessage());
+
+			e.printStackTrace();
+		}
+
+		return toRet;
+	}
+
+
+	/** General usage*/
+	public void clearRepository() {		
+		offeringRepo.deleteAll();		
+	}
 
 
 
-
-
-	
 }

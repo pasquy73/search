@@ -10,13 +10,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+
 import it.eng.dome.search.domain.IndexingObject;
 import it.eng.dome.search.domain.ProductOffering;
 import it.eng.dome.search.service.OfferingProcessor;
 
 @RestController
 @RequestMapping("/api")
-public class OfferingResource {
+public class OfferingBAEResource {
 
 	@Autowired
 	private OfferingProcessor offeringProcessor;
@@ -41,9 +43,15 @@ public class OfferingResource {
 	
 	
 	@PostMapping("/offerings/processListProductOffering")
-	public ResponseEntity<IndexingObject> processListProductOffering(@RequestBody ProductOffering[] product){
+	public ResponseEntity<List<IndexingObject>> processListProductOffering(@RequestBody ProductOffering[] product){
 
-		IndexingObject obj = offeringProcessor.processListProductOffering(product);
+		List<IndexingObject> obj = null;
+		try {
+			obj = offeringProcessor.processListProductOffering(product);
+		} catch (JsonProcessingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return ResponseEntity.ok(obj);
 
 	}
@@ -52,14 +60,6 @@ public class OfferingResource {
 	public ResponseEntity<List<IndexingObject>> processProductOfferingsInMarketplace(){
 
 		List<IndexingObject> obj = offeringProcessor.processListProductOffering();
-		return ResponseEntity.ok(obj);
-
-	}
-	
-	
-	@GetMapping("/offering/processProductOfferingsFromTMForumAPI")
-	public ResponseEntity<List<IndexingObject>> processProductOffetingsFromTMForumAPI(){
-		List<IndexingObject> obj = offeringProcessor.processListProductOfferingFromTMForumAPI();
 		return ResponseEntity.ok(obj);
 
 	}
