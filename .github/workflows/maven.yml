@@ -1,3 +1,11 @@
+# This workflow will build a Java project with Maven, and cache/restore any dependencies to improve the workflow execution time
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-maven
+
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
 name: Java CI with Maven
 
 on:
@@ -21,24 +29,20 @@ jobs:
       - name: Build with Maven
         run: mvn -B package --file pom.xml
 
-      -
-        name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
-      -
-        name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-      -
-        name: Login to Docker Hub
-        uses: docker/login-action@v3
+  publish-job:
+    runs-on: ubuntu-latest
+    needs: [build]
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-java@v1
         with:
-          username: pasquy1973
-          password: pasquy_1973
-      -
-        name: Build and push
-        uses: docker/build-push-action@v5
+          java-version: 14
+      - run: mvn -B package --file pom.xml -DskipTests
+      - run: mkdir staging && cp target/*jar-with-dependencies.jar staging
+      - uses: actions/upload-artifact@v1
         with:
-          push: true
-          tags: pasquy1973/search-test:0.0.1
+          name: Package
+          path: staging 
 
     # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
     #- name: Update dependency graph
