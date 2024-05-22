@@ -8,7 +8,7 @@ on:
 
 env:
   IMAGE_NAME: ${{ github.repository }}
-  TAG_VERSION: 0:0:${{ github.run_number }}
+  TAG_VERSION: 0.0.${{ github.run_number }}
 
 jobs:
   build:
