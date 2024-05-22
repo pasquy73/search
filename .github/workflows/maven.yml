@@ -7,10 +7,10 @@ on:
     branches: ["main"]
 
 env:
-  #IMAGE_NAME: ${{ github.repository }}
-  IMAGE_NAME: search-test-dome
+  #IMAGE_NAME: ${{ github.repository }} # github.repository => <user>/<repo>
+  IMAGE_NAME: ${{ secrets.DOCKERHUB_USERNAME }}/search-test-dome
   #TAG_VERSION: 0.0.${{ github.run_number }}
-  TAG_VERSION: 0.0.3
+  TAG_VERSION: 0.0.4
 
 jobs:
   build:
@@ -44,13 +44,6 @@ jobs:
       - run: mkdir staging && cp target/*SNAPSHOT.jar staging
       - run: ls -al
 
-      - name: Output Run ID
-        run: echo ${{ github.run_id }}
-      - name: Output Run Number
-        run: echo ${{ github.run_number }}
-      - name: Output Run Attempt
-        run: echo ${{ github.run_attempt }}
-
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
       - name: Set up Docker Buildx
@@ -66,4 +59,4 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:${{ env.TAG_VERSION }}
+          tags: ${{ env.IMAGE_NAME }}:${{ env.TAG_VERSION }}
