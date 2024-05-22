@@ -31,11 +31,10 @@ jobs:
   pmd_job:
     name: Analyse Source Code with PMD
     runs-on: ubuntu-latest  
-    steps:
-      # Using checkout is required
-      - name: Checkout
-        uses: actions/checkout@v2
+    needs: [build]
 
+    steps:
+      - uses: actions/checkout@v4
       # Run checks
       - name: PMD checks
         id: pmd-checks
