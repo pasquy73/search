@@ -18,7 +18,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
@@ -35,10 +36,16 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      # Run checks
-      - name: PMD checks
-      #  id: pmd-checks
-        uses: rody/pmd-gh-action 
+      - name: Generate PMD report
+        id: generate-pmd-report
+        uses: rody/pmd-github-action@main
+        with:
+          reportfile: 'pmd-report.json' # relative to the repo root
+          format: 'json'
+
+          # optional:
+          # make the action successful even when violations were found
+          failOnViolation: false
 
   publish:
     name: Publish in Docker Hub
