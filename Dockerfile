@@ -1,5 +1,5 @@
 FROM openjdk:11-slim
-COPY ./target/search-0.0.1-SNAPSHOT.jar /usr/app/
+COPY ./staging/search-engine.jar /usr/app/
 WORKDIR /usr/app
 
 RUN apt-get update && apt-get install -y \

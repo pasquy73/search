@@ -34,7 +34,7 @@ jobs:
       - run: mkdir staging && cp target/*SNAPSHOT.jar staging
       - uses: actions/upload-artifact@v1
         with:
-          name: search-engine
+          name: search-engine.jar
           path: staging 
 
   build-docker-image:
