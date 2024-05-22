@@ -28,6 +28,19 @@ jobs:
       - name: Build with Maven
         run: mvn -B package --file pom.xml
 
+  pmd_job:
+    name: Analyse Source Code with PMD
+    runs-on: ubuntu-latest  
+    steps:
+      # Using checkout is required
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      # Run checks
+      - name: PMD checks
+        id: pmd-checks
+        uses: rody/pmd-gh-action 
+
   publish:
     name: Publish in Docker Hub
     runs-on: ubuntu-latest
@@ -41,8 +54,6 @@ jobs:
           java-version: "17"
           distribution: "temurin"
       - run: mvn -B package --file pom.xml -DskipTests
-      - run: mkdir staging && cp target/*SNAPSHOT.jar staging
-      - run: ls -al
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
