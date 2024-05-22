@@ -1,5 +1,5 @@
 FROM openjdk:11-slim
-COPY /home/runner/work/search/search/staging/search-engine.jar /usr/app/
+COPY ./search-engine.jar /usr/app/
 WORKDIR /usr/app
 
 RUN apt-get update && apt-get install -y \
