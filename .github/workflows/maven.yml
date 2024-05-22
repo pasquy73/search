@@ -36,5 +36,6 @@ jobs:
       - run: mvn -B package --file pom.xml -DskipTests
       - run: mkdir staging && cp target/*SNAPSHOT.jar staging
       - run: ls -al
+      - run: cd target && ls -al
 
   

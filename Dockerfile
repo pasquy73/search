@@ -1,9 +1,9 @@
 FROM openjdk:11-slim
-COPY /home/runner/work/search/search/search-engine.jar /usr/app/
+COPY ./target/search-0.0.1-SNAPSHOT.jar /usr/app/
 WORKDIR /usr/app
 
 RUN apt-get update && apt-get install -y \
 	curl \
 	wget
 	
-ENTRYPOINT exec java $JAVA_OPTS -jar search-engine.jar
+ENTRYPOINT exec java $JAVA_OPTS -jar search-0.0.1-SNAPSHOT.jar
