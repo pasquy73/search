@@ -65,13 +65,10 @@ public class IndexingManager {
 				}
 			}
 		} catch (JsonMappingException e) {
-			log.error("JsonMappingException - Error during processProductOffering(). Skipped: {}", e.getMessage());
 			e.printStackTrace();
 		} catch (JsonProcessingException e) {
-			log.error("JsonProcessingException - Error during processProductOffering(). Skipped: {}", e.getMessage());
 			e.printStackTrace();
 		} catch (NullPointerException e) {
-			log.error("JsonProcessingException - Error during processProductOffering(). Skipped: {}", e.getMessage());
 			e.printStackTrace();
 		}
 

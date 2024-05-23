@@ -63,7 +63,6 @@ public class ElasticSearchConfig extends AbstractElasticsearchConfiguration {
                     builderWithProtocol = builder.usingSsl(sslContext);
 
                 } catch (NoSuchAlgorithmException | KeyStoreException | KeyManagementException e) {
-                    logger.error("Cannot disable ssl verification: {}", e.getLocalizedMessage());
                     builderWithProtocol = builder.usingSsl();
                 }
 
