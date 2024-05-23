@@ -7,6 +7,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
+/**
+ * @author mardetom
+ *
+ */
 @Component
 public class RestUtil {
 	
@@ -25,9 +29,28 @@ public class RestUtil {
 	@Value("${dome.getallproductofferings}")
 	private String getAllProductOfferings;
 	
+	@Value("${dome.gettmfallproductofferings}")
+	private String getTMFAllProductOfferings;
+	
+	@Value("${dome.gettmfproductofferingbyid}")
+	private String getTMFProductOfferingById;
+	
+	@Value("${dome.gettmfproductspecificationbyid}")
+	private String getTMFProductSpecificationById;
+	
+	@Value("${dome.gettmfservicespecificationbyid}")
+	private String getTMFServiceSpecificationById;
+	
+	@Value("${dome.gettmfresourcespecificationbyid}")
+	private String getTMFResourceSpecificationById;
+	
+	
 	private static final Logger log = LoggerFactory.getLogger(RestUtil.class);
 	private static RestTemplate restTemplate = new RestTemplate();
 	
+	/*
+	 * ---------- BAE Endpoints
+	*/
 	
 	public String getProductOfferingById(String id) {
 
@@ -68,6 +91,56 @@ public class RestUtil {
 	public String getAllProductOfferings() {
 
 		ResponseEntity<String> response= restTemplate.getForEntity(getAllProductOfferings, String.class);
+		String result= response.getBody();	
+
+		return result;
+	}
+	
+	
+	
+	/*
+	 * ---------- TM Forum Endpoints
+	*/
+	
+	public String getAllProductOfferingsFromTMForum() {
+
+		ResponseEntity<String> response= restTemplate.getForEntity(getTMFAllProductOfferings, String.class);
+		String result= response.getBody();	
+
+		return result;
+	}
+	
+	
+	public String getTMFProductOfferingById(String id) {
+
+		ResponseEntity<String> response= restTemplate.getForEntity(getTMFProductOfferingById + "/"+id, String.class);
+		String result= response.getBody();	
+
+		return result;
+	}
+	
+	
+	public String getTMFProductSpecificationById(String id) {
+
+		ResponseEntity<String> response= restTemplate.getForEntity(getTMFProductSpecificationById + "/"+id, String.class);
+		String result= response.getBody();	
+
+		return result;
+	}
+	
+	
+	public String getTMFServiceSpecificationById(String id) {
+
+		ResponseEntity<String> response= restTemplate.getForEntity(getTMFServiceSpecificationById + "/"+id, String.class);
+		String result= response.getBody();	
+
+		return result;
+	}
+	
+	
+	public String getTMFResourceSpecificationById(String id) {
+
+		ResponseEntity<String> response= restTemplate.getForEntity(getTMFResourceSpecificationById + "/"+id, String.class);
 		String result= response.getBody();	
 
 		return result;
