@@ -33,45 +33,52 @@ public class IndexingManager {
 
 		try {
 
-			if(product.getName() == null) {
+			if (product.getName() == null) {
 				log.info("null value in name");
 
-			}else{
+			} else {
 				objToIndex = mappingManager.prepareOfferingMetadata(product, objToIndex);
 
-				ProductSpecification productSpec = product.getProductSpecification();			
-				if(productSpec.getId() == null) {
+				ProductSpecification productSpec = product.getProductSpecification();
+				if (productSpec.getId() == null) {
 					log.info("null value in ProductSpecification ID");
-				}else {
+				} else {
 					String requestForProductSpecById = restTemplate.getProductSpecificationById(productSpec.getId());
 
-					ProductSpecification productSpecDetails = objectMapper.readValue(requestForProductSpecById, ProductSpecification.class);
+					ProductSpecification productSpecDetails = objectMapper.readValue(requestForProductSpecById,
+							ProductSpecification.class);
 
 					objToIndex = mappingManager.prepareProdSpecMetadata(productSpecDetails, objToIndex);
 
 					ServiceSpecification[] serviceList = productSpecDetails.getServiceSpecification();
 
-					if(serviceList != null) {
-						
+					if (serviceList != null) {
+
 						log.info("---Mapping Services associated---");
-						objToIndex = mappingManager.prepareServiceSpecMetadata(serviceList,objToIndex);
+						objToIndex = mappingManager.prepareServiceSpecMetadata(serviceList, objToIndex);
 					}
 
 					ResourceSpecification[] resourceList = productSpecDetails.getResourceSpecification();
-					if(resourceList != null) {
+					if (resourceList != null) {
 						log.info("---Mapping Resources associated---");
-						objToIndex = mappingManager.prepareResourceSpecMetadata(resourceList,objToIndex);
+						objToIndex = mappingManager.prepareResourceSpecMetadata(resourceList, objToIndex);
 					}
 				}
 			}
 		} catch (JsonMappingException e) {
-			log.warn("JsonMappingException - Error during processProductOffering(). Skipped: {}", e.getMessage());
+			if (log.isWarnEnabled()) {
+				log.warn("JsonMappingException - Error during processProductOffering(). Skipped: {}", e.getMessage());				
+			}
 			e.printStackTrace();
 		} catch (JsonProcessingException e) {
+			if (log.isWarnEnabled()) {
 			log.warn("JsonProcessingException - Error during processProductOffering(). Skipped: {}", e.getMessage());
+			}
 			e.printStackTrace();
 		} catch (NullPointerException e) {
-			log.warn("JsonProcessingException - Error during processProductOffering(). Skipped: {}", e.getMessage());
+			if (log.isWarnEnabled()) {
+				log.warn("JsonProcessingException - Error during processProductOffering(). Skipped: {}", e.getMessage());
+			}
 			e.printStackTrace();
 		}
 
