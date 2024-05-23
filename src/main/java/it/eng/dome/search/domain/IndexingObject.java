@@ -173,7 +173,7 @@ public class IndexingObject {
 	}
 
 	public ServiceSpecification[] getServices() {
-		return services;
+		return services == null ? null : services.clone();
 	}
 
 	public void setServices(ServiceSpecification[] services) {
