@@ -51,7 +51,7 @@ jobs:
         id: generate-pmd-report
         uses: pmd/pmd-github-action@v2
         with:
-          rulesets: 'rulesets/java/pmd.xml'
+          rulesets: './rulesets/java/pmd.xml'
           sourcePath: 'src/main/java'
           analyzeModifiedFilesOnly: false
       
