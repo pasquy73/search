@@ -29,7 +29,7 @@ public class IndexingManager {
 
 	private static final ObjectMapper objectMapper = new ObjectMapper();
 
-	@SuppressWarnings("PMD.GuardLogStatementJavaUtil")
+	@SuppressWarnings("PMD.GuardLogStatement")
 	public IndexingObject processOffering(ProductOffering product, IndexingObject objToIndex) {
 
 		try {
