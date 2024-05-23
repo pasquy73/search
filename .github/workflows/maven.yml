@@ -61,7 +61,7 @@ jobs:
           sarif_file: pmd-report.sarif
 
       - name: Fail build if there are violations
-        if: steps.generate-pmd-report.outputs.violations > 50
+        if: steps.generate-pmd-report.outputs.violations > 40
         run: exit 1
 
   publish:
