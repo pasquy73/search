@@ -27,7 +27,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @Service
-@SuppressWarnings("PMD.GuardLogStatement")
 public class SearchProcessor {
 	
 	@Autowired

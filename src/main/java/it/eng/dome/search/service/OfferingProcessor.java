@@ -22,7 +22,6 @@ import it.eng.dome.search.repository.OfferingRepository;
 import it.eng.dome.search.rest.web.util.RestUtil;
 
 @Service
-@SuppressWarnings("PMD.GuardLogStatement")
 public class OfferingProcessor {
 
 	@Autowired

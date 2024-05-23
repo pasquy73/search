@@ -21,7 +21,6 @@ import it.eng.dome.search.domain.ProductOffering;
 import it.eng.dome.search.rest.web.util.RestUtil;
 
 @Service
-@SuppressWarnings("PMD.GuardLogStatement")
 public class ResultProcessor {
 
 	private static final Logger logger = LoggerFactory.getLogger(ResultProcessor.class);

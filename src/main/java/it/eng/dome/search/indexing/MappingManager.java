@@ -20,7 +20,6 @@ import it.eng.dome.search.domain.ServiceSpecification;
 import it.eng.dome.search.rest.web.util.RestUtil;
 
 @Component
-@SuppressWarnings("PMD.GuardLogStatement")
 public class MappingManager {
 
 	@Autowired

@@ -17,7 +17,6 @@ import it.eng.dome.search.domain.ServiceSpecification;
 import it.eng.dome.search.rest.web.util.RestUtil;
 
 @Service
-@SuppressWarnings("PMD.GuardLogStatement")
 public class IndexingManager {
 
 	@Autowired
@@ -76,7 +75,6 @@ public class IndexingManager {
 
 	}
 
-	@SuppressWarnings("PMD.GuardLogStatement")
 	public IndexingObject processOfferingFromTMForum(ProductOffering product, IndexingObject objToIndex) {
 		try {
 

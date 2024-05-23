@@ -1,13 +1,17 @@
 <?xml version="1.0"?>
-<ruleset name="Main rules"
+<ruleset name="Dome rules"
          xmlns="http://pmd.sourceforge.net/ruleset/2.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 https://pmd.sourceforge.io/ruleset_2_0_0.xsd">
 
-  <description>Main rules</description>
+  <description>Dome rules</description>
+
+  <!-- reference https://github.com/pmd/pmd/tree/master/pmd-java -->
 
   <rule ref="category/java/bestpractices.xml">
     <exclude name="GuardLogStatement"/>
   </rule>
-  <!--rule ref="category/java/security.xml"/-->
+  <rule ref="category/java/performance.xml"/>
+  <rule ref="category/java/codestyle.xml"/>
+
 </ruleset>
