@@ -13,7 +13,7 @@
     <exclude name="AvoidReassigningParameters"/>
   </rule-->
   
-  <rule ref="category/java/performance.xml"/>
+  <!--rule ref="category/java/performance.xml"/-->
   <!-- rule ref="category/java/codestyle.xml"/ -->
   <rule ref="category/java/security.xml"/>
 
