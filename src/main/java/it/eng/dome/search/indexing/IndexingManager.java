@@ -75,7 +75,8 @@ public class IndexingManager {
 		return objToIndex;
 
 	}
-
+	
+	@SuppressWarnings("PMD.GuardLogStatement")
 	public IndexingObject processOfferingFromTMForum(ProductOffering product, IndexingObject objToIndex) {
 		try {
 
