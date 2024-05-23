@@ -8,10 +8,10 @@
 
   <!-- reference https://github.com/pmd/pmd/tree/master/pmd-java -->
 
-  <!--rule ref="category/java/bestpractices.xml">
+  <rule ref="category/java/bestpractices.xml">
     <exclude name="GuardLogStatement"/>
     <exclude name="AvoidReassigningParameters"/>
-  </rule-->
+  </rule>
   
   <!--rule ref="category/java/performance.xml"/-->
   <!-- rule ref="category/java/codestyle.xml"/ -->
