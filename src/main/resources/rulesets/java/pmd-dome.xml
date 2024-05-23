@@ -10,6 +10,7 @@
 
   <rule ref="category/java/bestpractices.xml">
     <exclude name="GuardLogStatement"/>
+    <exclude name="AvoidReassigningParameters"/>
   </rule>
   
   <rule ref="category/java/performance.xml"/>
