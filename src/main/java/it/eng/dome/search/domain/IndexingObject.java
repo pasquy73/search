@@ -18,6 +18,9 @@ public class IndexingObject {
 	@Id
 	protected String id;
 	
+	@Field (type = FieldType.Nested)
+	private ProductOffering productOffering;
+	
 	//from ProductOffering
 	
 	@Field(type = FieldType.Keyword)
@@ -39,6 +42,9 @@ public class IndexingObject {
 	private Boolean productOfferingIsBundle;	
 	
 	//from ProductSpecification
+	
+	@Field(type = FieldType.Nested)
+	private ProductSpecification productSpecification;
 
 	@Field(type = FieldType.Keyword)
 	private String productSpecificationId;
@@ -61,11 +67,10 @@ public class IndexingObject {
 	private ServiceSpecification[] services;
 	
 	//from Resource Specification
+	@Field(type = FieldType.Nested)
 	private ResourceSpecification[] resources;
 	
-	//from Categorization and Entities Extraction
-	
-	//put here fields for semantic services ----
+	//from Categorization and Entities Extraction  //put here fields for semantic services ----
 	
 	
 	public String getId() {
@@ -181,6 +186,22 @@ public class IndexingObject {
 
 	public void setResources(ResourceSpecification[] resources) {
 		this.resources = resources;
+	}
+	
+	public ProductOffering getProductOffering() {
+		return productOffering;
+	}
+
+	public void setProductOffering(ProductOffering productOffering) {
+		this.productOffering = productOffering;
+	}
+
+	public ProductSpecification getProductSpecification() {
+		return productSpecification;
+	}
+
+	public void setProductSpecification(ProductSpecification productSpecification) {
+		this.productSpecification = productSpecification;
 	}
 
 }

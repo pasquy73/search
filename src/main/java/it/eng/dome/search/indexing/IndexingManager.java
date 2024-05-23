@@ -20,7 +20,7 @@ import it.eng.dome.search.rest.web.util.RestUtil;
 public class IndexingManager {
 
 	@Autowired
-	private RestUtil restTemplate;
+	private RestUtil restUtil;
 
 	@Autowired
 	private MappingManager mappingManager;
@@ -33,57 +33,98 @@ public class IndexingManager {
 
 		try {
 
-			if (product.getName() == null) {
-				log.info("null value in name");
+			objToIndex = mappingManager.prepareOfferingMetadata(product, objToIndex);
 
-			} else {
-				objToIndex = mappingManager.prepareOfferingMetadata(product, objToIndex);
+			ProductSpecification productSpec = product.getProductSpecification();			
+			if(productSpec.getId() == null) {
+				log.info("null value in ProductSpecification ID");
+			}else {
+				String requestForProductSpecById = restUtil.getProductSpecificationById(productSpec.getId());
 
-				ProductSpecification productSpec = product.getProductSpecification();
-				if (productSpec.getId() == null) {
-					log.info("null value in ProductSpecification ID");
-				} else {
-					String requestForProductSpecById = restTemplate.getProductSpecificationById(productSpec.getId());
+				ProductSpecification productSpecDetails = objectMapper.readValue(requestForProductSpecById, ProductSpecification.class);
 
-					ProductSpecification productSpecDetails = objectMapper.readValue(requestForProductSpecById,
-							ProductSpecification.class);
+				objToIndex = mappingManager.prepareProdSpecMetadata(productSpecDetails, objToIndex);
 
-					objToIndex = mappingManager.prepareProdSpecMetadata(productSpecDetails, objToIndex);
+				ServiceSpecification[] serviceList = productSpecDetails.getServiceSpecification();
 
-					ServiceSpecification[] serviceList = productSpecDetails.getServiceSpecification();
+				if(serviceList != null) {
 
-					if (serviceList != null) {
+					log.info("---Mapping Services associated---");
+					objToIndex = mappingManager.prepareServiceSpecMetadata(serviceList,objToIndex);
+				}
 
-						log.info("---Mapping Services associated---");
-						objToIndex = mappingManager.prepareServiceSpecMetadata(serviceList, objToIndex);
-					}
-
-					ResourceSpecification[] resourceList = productSpecDetails.getResourceSpecification();
-					if (resourceList != null) {
-						log.info("---Mapping Resources associated---");
-						objToIndex = mappingManager.prepareResourceSpecMetadata(resourceList, objToIndex);
-					}
+				ResourceSpecification[] resourceList = productSpecDetails.getResourceSpecification();
+				if(resourceList != null) {
+					log.info("---Mapping Resources associated---");
+					objToIndex = mappingManager.prepareResourceSpecMetadata(resourceList,objToIndex);
 				}
 			}
+
 		} catch (JsonMappingException e) {
-			if (log.isWarnEnabled()) {
-				log.warn("JsonMappingException - Error during processProductOffering(). Skipped: {}", e.getMessage());				
-			}
+			log.warn("JsonMappingException - Error during processProductOffering(). Skipped: {}", e.getMessage());
 			e.printStackTrace();
 		} catch (JsonProcessingException e) {
-			if (log.isWarnEnabled()) {
 			log.warn("JsonProcessingException - Error during processProductOffering(). Skipped: {}", e.getMessage());
-			}
 			e.printStackTrace();
 		} catch (NullPointerException e) {
-			if (log.isWarnEnabled()) {
-				log.warn("JsonProcessingException - Error during processProductOffering(). Skipped: {}", e.getMessage());
-			}
+			log.warn("JsonProcessingException - Error during processProductOffering(). Skipped: {}", e.getMessage());
 			e.printStackTrace();
 		}
 
 		return objToIndex;
 
+	}
+
+	public IndexingObject processOfferingFromTMForum(ProductOffering product, IndexingObject objToIndex) {
+		try {
+
+			//			if(product.getName() == null) {
+			//				log.info("null value in name");
+			//			}
+			//			
+			//			if(product.getDescription() == null) {
+			//				log.info("null value in description");
+			//			
+			//			}else{
+			objToIndex = mappingManager.prepareOfferingMetadata(product, objToIndex);
+
+			ProductSpecification productSpec = product.getProductSpecification();			
+			if(productSpec.getId() == null) {
+				log.info("null value in ProductSpecification ID");
+			}else {
+				String requestForProductSpecById = restUtil.getTMFProductSpecificationById(productSpec.getId());
+
+				ProductSpecification productSpecDetails = objectMapper.readValue(requestForProductSpecById, ProductSpecification.class);
+
+				objToIndex = mappingManager.prepareProdSpecMetadata(productSpecDetails, objToIndex);
+
+				ServiceSpecification[] serviceList = productSpecDetails.getServiceSpecification();
+
+				if(serviceList != null) {
+
+					log.info("---Mapping Services associated---");
+					objToIndex = mappingManager.prepareTMFServiceSpecMetadata(serviceList,objToIndex);
+				}
+
+				ResourceSpecification[] resourceList = productSpecDetails.getResourceSpecification();
+				if(resourceList != null) {
+					log.info("---Mapping Resources associated---");
+					objToIndex = mappingManager.prepareTMFResourceSpecMetadata(resourceList,objToIndex);
+				}
+			}
+			//}
+		} catch (JsonMappingException e) {
+			log.warn("JsonMappingException - Error during processProductOffering(). Skipped: {}", e.getMessage());
+			e.printStackTrace();
+		} catch (JsonProcessingException e) {
+			log.warn("JsonProcessingException - Error during processProductOffering(). Skipped: {}", e.getMessage());
+			e.printStackTrace();
+		} catch (NullPointerException e) {
+			log.warn("JsonProcessingException - Error during processProductOffering(). Skipped: {}", e.getMessage());
+			e.printStackTrace();
+		}
+
+		return objToIndex;
 	}
 
 }

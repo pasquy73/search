@@ -35,26 +35,25 @@ public class SearchProcessor {
 	private static final Logger logger = LoggerFactory.getLogger(SearchProcessor.class);
 
 	
-	public Page<IndexingObject> search(String q, Pageable pageable){
-
-       // QueryBuilder queryBuilder = QueryBuilders.simpleQueryStringQuery(q);
-		QueryBuilder queryBuilder = QueryBuilders.queryStringQuery(q);
-        		
-        NativeSearchQueryBuilder nativeSearchQueryBuilder = new NativeSearchQueryBuilder()
-                .withQuery(queryBuilder )
-                .withPageable(pageable);
-
-        Query elasticQuery = nativeSearchQueryBuilder.build();
-
-        try {
-            SearchHits<IndexingObject> searchHits = elasticsearchOperations.search(elasticQuery, IndexingObject.class); 
-            List<IndexingObject> resultPage = searchHits.stream().map(SearchHit::getContent).collect(Collectors.toList());
-            return  new PageImpl<>(resultPage,pageable,searchHits.getTotalHits());
-        } catch (Exception e) {
-            logger.warn("Error during search. Skipped: {}", e.getMessage());
-            return new PageImpl<>(new ArrayList<>());
-        }
-    }
+	
+	  public Page<IndexingObject> search(String q, Pageable pageable){
+	  
+	  // QueryBuilder queryBuilder = QueryBuilders.simpleQueryStringQuery(q);
+	  QueryBuilder queryBuilder = QueryBuilders.queryStringQuery(q); //.defaultOperator(null);
+	  
+	  NativeSearchQueryBuilder nativeSearchQueryBuilder = new
+	  NativeSearchQueryBuilder() .withQuery(queryBuilder ) .withPageable(pageable);
+	  
+	  Query elasticQuery = nativeSearchQueryBuilder.build();
+	  
+	  try { SearchHits<IndexingObject> searchHits =
+	  elasticsearchOperations.search(elasticQuery, IndexingObject.class);
+	  List<IndexingObject> resultPage =
+	  searchHits.stream().map(SearchHit::getContent).collect(Collectors.toList());
+	  return new PageImpl<>(resultPage,pageable,searchHits.getTotalHits()); } catch
+	  (Exception e) { logger.warn("Error during search. Skipped: {}",
+	  e.getMessage()); return new PageImpl<>(new ArrayList<>()); } }
+	 
 	
 	
 	

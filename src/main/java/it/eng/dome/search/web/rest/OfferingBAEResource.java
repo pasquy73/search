@@ -5,11 +5,12 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 import it.eng.dome.search.domain.IndexingObject;
 import it.eng.dome.search.domain.ProductOffering;
@@ -17,18 +18,19 @@ import it.eng.dome.search.service.OfferingProcessor;
 
 @RestController
 @RequestMapping("/api")
-public class OfferingResource {
+public class OfferingBAEResource {
 
 	@Autowired
 	private OfferingProcessor offeringProcessor;
 
-	@PostMapping("/indexing")
-	public ResponseEntity<IndexingObject> save(IndexingObject obj){
-
-		obj = offeringProcessor.save(obj);
-		return ResponseEntity.ok(obj);
-
-	}
+	/*
+	 * @PostMapping("/indexing") public ResponseEntity<IndexingObject>
+	 * save(IndexingObject obj){
+	 * 
+	 * obj = offeringProcessor.save(obj); return ResponseEntity.ok(obj);
+	 * 
+	 * }
+	 */
 
 
 	@PostMapping("/offerings/processProductOffering")
@@ -41,9 +43,15 @@ public class OfferingResource {
 	
 	
 	@PostMapping("/offerings/processListProductOffering")
-	public ResponseEntity<IndexingObject> processListProductOffering(@RequestBody ProductOffering[] product){
+	public ResponseEntity<List<IndexingObject>> processListProductOffering(@RequestBody ProductOffering[] product){
 
-		IndexingObject obj = offeringProcessor.processListProductOffering(product);
+		List<IndexingObject> obj = null;
+		try {
+			obj = offeringProcessor.processListProductOffering(product);
+		} catch (JsonProcessingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return ResponseEntity.ok(obj);
 
 	}
@@ -55,6 +63,9 @@ public class OfferingResource {
 		return ResponseEntity.ok(obj);
 
 	}
+	
+	
+	
 
 
 	/*
@@ -69,14 +80,14 @@ public class OfferingResource {
 	 * }
 	 */
 	
-	
-	@GetMapping("/offerings/analyzeToken")
-	public ResponseEntity<String> analyzeToken(){
-		
-		String obj = offeringProcessor.analyzeToken();
-		return ResponseEntity.ok(obj);
-		
-	}
+	/*
+	 * @GetMapping("/offerings/analyzeToken") public ResponseEntity<String>
+	 * analyzeToken(){
+	 * 
+	 * String obj = offeringProcessor.analyzeToken(); return ResponseEntity.ok(obj);
+	 * 
+	 * }
+	 */
 	
 	
 	@GetMapping("/offerings/clearRepository")
@@ -85,6 +96,9 @@ public class OfferingResource {
 		offeringProcessor.clearRepository();
 		return (ResponseEntity) ResponseEntity.ok();
 	}
+	
+	
+	
 	
 	
 	

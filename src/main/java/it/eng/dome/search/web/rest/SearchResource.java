@@ -17,7 +17,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import it.eng.dome.search.domain.IndexingObject;
+import it.eng.dome.search.domain.ProductOffering;
 import it.eng.dome.search.rest.web.util.PaginationUtil;
+import it.eng.dome.search.service.ResultProcessor;
 import it.eng.dome.search.service.SearchProcessor;
 
 @RestController
@@ -26,18 +28,39 @@ public class SearchResource {
 
 	@Autowired
 	private SearchProcessor searchProcessor;
+	
+	@Autowired
+	private ResultProcessor resultProcessor;
 
-	// @ApiPageable
-	@GetMapping(value = "/SearchByKeywords/{query}")
-	public ResponseEntity<List<IndexingObject>> search(@PathVariable String query,
+//	// @ApiPageable
+//	@GetMapping(value = "/SearchByKeywords/{query}")
+//	public ResponseEntity<List<IndexingObject>> search(@PathVariable String query,
+//			/*
+//			 * @PageableDefault(sort = {"productOfferingName.keyword"}, direction =
+//			 * Sort.Direction.ASC, size = 50)
+//			 */ Pageable pageable) {
+//
+//		Page<IndexingObject> page = searchProcessor.search(query, pageable);
+//		HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/SearchByKeywords/" + query);
+//		return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+//
+//		// List<IndexingObject> objList = page.getContent();
+//		// return ResponseEntity.ok(objList);
+//
+//	}
+	
+	
+	@GetMapping(value = "/SearchProductsByKeywords/{query}")
+	public ResponseEntity<List<ProductOffering>> searchProductOfferings(@PathVariable String query,
 			/*
 			 * @PageableDefault(sort = {"productOfferingName.keyword"}, direction =
 			 * Sort.Direction.ASC, size = 50)
 			 */ Pageable pageable) {
 
 		Page<IndexingObject> page = searchProcessor.search(query, pageable);
-		HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/SearchByKeywords/" + query);
-		return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+		Page<ProductOffering> pageProduct = resultProcessor.processResults(page, pageable);
+		HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(pageProduct, "/api/SearchProductsByKeywords/" + query);
+		return new ResponseEntity<>(pageProduct.getContent(), headers, HttpStatus.OK);
 
 		// List<IndexingObject> objList = page.getContent();
 		// return ResponseEntity.ok(objList);
