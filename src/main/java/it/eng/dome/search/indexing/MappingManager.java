@@ -20,6 +20,7 @@ import it.eng.dome.search.domain.ServiceSpecification;
 import it.eng.dome.search.rest.web.util.RestUtil;
 
 @Component
+@SuppressWarnings("PMD.GuardLogStatement")
 public class MappingManager {
 
 	@Autowired
@@ -66,7 +67,6 @@ public class MappingManager {
 	}
 
 
-	@SuppressWarnings("PMD.GuardLogStatementJavaUtil")
 	public IndexingObject prepareServiceSpecMetadata(ServiceSpecification[] serviceList, IndexingObject objToIndex) {
 
 		ArrayList<ServiceSpecification> listServiceDetails = new ArrayList<ServiceSpecification>();

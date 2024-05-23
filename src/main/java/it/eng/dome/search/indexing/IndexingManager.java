@@ -17,6 +17,7 @@ import it.eng.dome.search.domain.ServiceSpecification;
 import it.eng.dome.search.rest.web.util.RestUtil;
 
 @Service
+@SuppressWarnings("PMD.GuardLogStatement")
 public class IndexingManager {
 
 	@Autowired
@@ -29,7 +30,6 @@ public class IndexingManager {
 
 	private static final ObjectMapper objectMapper = new ObjectMapper();
 
-	@SuppressWarnings("PMD.GuardLogStatement")
 	public IndexingObject processOffering(ProductOffering product, IndexingObject objToIndex) {
 
 		try {
@@ -75,7 +75,7 @@ public class IndexingManager {
 		return objToIndex;
 
 	}
-	
+
 	@SuppressWarnings("PMD.GuardLogStatement")
 	public IndexingObject processOfferingFromTMForum(ProductOffering product, IndexingObject objToIndex) {
 		try {
