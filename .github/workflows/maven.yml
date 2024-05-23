@@ -51,7 +51,7 @@ jobs:
         id: generate-pmd-report
         uses: pmd/pmd-github-action@v2
         with:
-          rulesets: 'rulesets/java/quickstart.xml'
+          rulesets: 'rulesets/java/quickstart.xml,ruleset.xml'
           sourcePath: 'src/main/java'
           analyzeModifiedFilesOnly: false
       
